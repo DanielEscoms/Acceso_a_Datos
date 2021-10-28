@@ -79,12 +79,15 @@ public class Modelo {
 			BufferedWriter bw = new BufferedWriter(fw);
 			String linea = br.readLine();
 			while(linea != null) {
-				bw.write(linea.replaceAll(textoBuscar, textoReemplazar));
+				linea = linea.replaceAll(textoBuscar, textoReemplazar);
+				bw.write(linea);
 				bw.newLine();
 				linea = br.readLine();
 			}
 			br.close();
 			fr.close();
+			bw.close();
+			fw.close();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);	
 		}
