@@ -58,7 +58,7 @@ public class Libro {
 	}
 	
 	public String toString() {
-		return "Información libro: (id: "+id+"; titulo: "+titulo+"; autor: "+autor+"; anyo publicación: "+anyoPublicacion+
-				"; editorial: "+editorial+"; número de páginas: "+numeroPaginas+")";
+		return "Información libro: (Id: "+id+"; Título: "+titulo+"; Autor: "+autor+"; Anyo publicación: "+anyoPublicacion+
+				"; Editorial: "+editorial+"; Número de páginas: "+numeroPaginas+")";
 	}
 }

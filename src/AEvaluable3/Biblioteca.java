@@ -103,7 +103,19 @@ public class Biblioteca {
 	*/
 	public static int crearLibro(Libro libro) {
 		lista.add(libro);
+		escribirXML(lista);
 		
+		return libro.getId();
+	}
+	
+	
+	/*
+	escribirXML
+	Descripción: método al que se le pasa por parámetro una lista de objetos de tipo Libro y los escribe en el fichero "biblioteca.xml". 
+	Entradas: lista de objetos de tipo Libro.
+	Salidas: no.
+	*/
+	public static void escribirXML(ArrayList<Libro> lista) {
 		try{
 			//Preparar el DOM
 			DocumentBuilderFactory dFact = DocumentBuilderFactory.newInstance();
@@ -159,14 +171,12 @@ public class Biblioteca {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		return libro.getId();
 	}
 	
 	
 	/*
 	recuperarLibro
-	Descripción: método al que se le pasa por parámetro un numero entero como identificador del libro que recorre la lista de libros 
+	Descripción: método al que se le pasa por parámetro un número entero como identificador del libro, se recorre la lista de libros 
 				 para ver cuando coinciden los id, de modo que devuelve el objeto Libro con dicho identificador.
 	Entradas: número entero como el identificador del libro.
 	Salidas: objeto de tipo Libro con dicho identificador o null en caso de no encontrarlo.
@@ -204,6 +214,7 @@ public class Biblioteca {
 		System.out.println(libro.getNumeroPaginas());
 	}
 	
+	
 	/*
 	mostrarTodos
 	Descripción: método que muestra para cada libro de la lista el id y título, para ello se recorre la lista de libros de la biblioteca 
@@ -214,8 +225,69 @@ public class Biblioteca {
 	public static void mostrarTodosTitulos() {
 		System.out.println("Los libros de la biblioteca son (id y título): ");
 		for (Libro lib : lista) {
-			System.out.print("Id: " + lib.getId() + " --> título: " + lib.getTitulo()+"\n");			
+			System.out.print("Id: " + lib.getId() + " --> título: " + lib.getTitulo()+"\n");
 		}
+	}
+	
+	
+	/*
+	borrarLibro
+	Descripción: método al que se le pasa por parámetro un número entero como identificador del libro, lo elimina de la lista y actualiza el fichero "biblioteca.xml".
+	Entradas: número entero con el identificador del objeto de tipo Libro.
+	Salidas: no
+	*/
+	public static void borrarLibro(int identificador) {
+		Scanner teclado = new Scanner(System.in);
+		Libro libro = recuperarLibro(identificador);
+		System.out.println(libro.toString());
+		int indice = 0;
+		for (Libro lib : lista) {
+			if (identificador == lib.getId()) {
+				lista.remove(indice); //Elimina el elemento que se encuentra en la posición indicada. Devuelve el elemento eliminado.
+				break;
+			}
+			indice++;
+		}
+		escribirXML(lista);
+	}
+	
+	
+	/*
+	actualizarLibro
+	Descripcion: metodo que, dado el identificador de un libro, actualiza su contenido pidiendo al usuario los nuevos valores
+	Entradas: entero con el identificador del libro
+	Salidas: no
+	*/
+	public static void actualizarLibro(int identificador) {
+		Scanner teclado = new Scanner(System.in);
+		String nuevoDato;
+		Libro lib = recuperarLibro(identificador);
+		System.out.println(lib.toString());
+		System.out.println("Introduce los nuevos valores");
+		System.out.print("Modificar título: ");
+		nuevoDato = teclado.nextLine();
+		lib.setTitulo(nuevoDato);
+		System.out.print("Modificar autor: ");
+		nuevoDato = teclado.nextLine();
+		lib.setAutor(nuevoDato);
+		System.out.print("Modificar año de publicación: ");
+		nuevoDato = teclado.nextLine();
+		lib.setAnyoPublicacion(nuevoDato);
+		System.out.print("Modificar editorial: ");
+		nuevoDato = teclado.nextLine();
+		lib.setEditorial(nuevoDato);
+		System.out.print("Modificar número de páginas: ");
+		nuevoDato = teclado.nextLine();
+		lib.setNumeroPaginas(nuevoDato);
+		int indice = 0;
+		for (Libro libro : lista) {
+			if (libro.getId() == identificador) {
+				lista.set(indice,lib); //Sustituye el elemento que se encuentra en la posición indicada por el objeto lib. Devuelve el elemento sustituido.
+				break;
+			}
+			indice++;
+		}
+		escribirXML(lista);
 	}
 	
 	
@@ -247,8 +319,8 @@ public class Biblioteca {
 					mostrarTodosTitulos();
 					break;
 				case 2:
-					System.out.print(" Indica el identificador del libro a mostrar: ");
-					id = Integer.parseInt(teclado.next());
+					System.out.print("Indica el identificador del libro a mostrar: ");
+					id = Integer.parseInt(teclado.next());// Se recibe el identificador por teclado
 					Libro libro = recuperarLibro(id);
 					mostrarLibro(libro);
 					break;
@@ -256,8 +328,14 @@ public class Biblioteca {
 					pedirDatosLibro();
 					break;
 				case 4:
+					System.out.print("Indica el identificador del libro a modificar: ");
+					id = Integer.parseInt(teclado.next());
+					actualizarLibro(id);
 					break;
 				case 5:
+					System.out.print("Indica el identificador del libro a borrar: ");
+					id = Integer.parseInt(teclado.next());
+					borrarLibro(id);
 					break;
 				case 6:
 					System.out.println("Gracias por usar la biblioteca.");
