@@ -22,7 +22,7 @@
         <numero_paginas>240</numero_paginas>
     </libro>
     <libro id="4">
-        <titulo>Harry Potter y la c�mara secreta</titulo>
+        <titulo>Harry Potter y la cÃ¡mara secreta</titulo>
         <autor>JK Rowling</autor>
         <anyo_publicacion>1998</anyo_publicacion>
         <editorial>Bloomsbury Publishing</editorial>
@@ -36,7 +36,7 @@
         <numero_paginas>317</numero_paginas>
     </libro>
     <libro id="6">
-        <titulo>Harry Potter y el c�liz de fuego</titulo>
+        <titulo>Harry Potter y el cÃ¡liz de fuego</titulo>
         <autor>JK Rowling</autor>
         <anyo_publicacion>2000</anyo_publicacion>
         <editorial>Bloomsbury Publishing</editorial>
