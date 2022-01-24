@@ -28,7 +28,7 @@ public class Biblioteca {
 			BufferedReader br = new BufferedReader(fr);
 			String linea = br.readLine(); // Leemos la primera linea que son los nombres de las columnas del excel para empezar el bucle while leyendo datos de libros.
 			
-			/*while((linea = br.readLine()) != null) {
+			while((linea = br.readLine()) != null) {
 				String[] datosLinea = linea.split(";");
 				for (int i = 0; i < datosLinea.length; i++) { //Con este bucle se rellenan los campos que estan bacíos escribiendo N.C. (no consta)
 					if (datosLinea[i].equals("")) {
@@ -61,7 +61,7 @@ public class Biblioteca {
 				ps.close();
 				
 				
-			}*/
+			}
 			br.close();
 			fr.close();
 			
@@ -96,16 +96,12 @@ public class Biblioteca {
 			
 			con.close();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
