@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Biblioteca {
 
@@ -26,7 +28,7 @@ public class Biblioteca {
 			BufferedReader br = new BufferedReader(fr);
 			String linea = br.readLine(); // Leemos la primera linea que son los nombres de las columnas del excel para empezar el bucle while leyendo datos de libros.
 			
-			while((linea = br.readLine()) != null) {
+			/*while((linea = br.readLine()) != null) {
 				String[] datosLinea = linea.split(";");
 				for (int i = 0; i < datosLinea.length; i++) { //Con este bucle se rellenan los campos que estan bacíos escribiendo N.C. (no consta)
 					if (datosLinea[i].equals("")) {
@@ -57,10 +59,41 @@ public class Biblioteca {
 					System.out.println(ps.toString()); // mostramos la sentencia y los datos insertados.
 				}
 				ps.close();
-			}
-			
+				
+				
+			}*/
 			br.close();
 			fr.close();
+			
+			// Código primera consulta.
+			Statement stmt = con.createStatement(); // Se crea la sentencia.
+			System.out.println("\nConsulta de Libros (título, autor y año de publicación) de los autores nacidos antes de 1950.\n");
+			ResultSet rs = stmt.executeQuery("SELECT titulo,autor,anyo_pub FROM libros WHERE anyo_nac < 1950"); // Se ejecuta la sentencia.
+			
+			System.out.format("%35s%23s%10s%2s","titulo","autor","anyo_pub","\n"); // Se saca por consola el contenido aplicando el formato adecuado para 3 columna.
+			System.out.format("%35s%23s%10s%2s","======","=====","========","\n");
+			
+			while(rs.next()) { // Se recorren cada una de las líneas del resultado de la consulta.
+				System.out.format("%35s%23s%10s%2s",rs.getString(1),rs.getString(2),rs.getString(3),"\n");
+			}
+			rs.close();
+			stmt.close();
+			// Fin código primera consulta.
+			
+			// Código segunda consulta.
+			stmt = con.createStatement(); // Se crea la sentencia.
+			System.out.println("\nConsulta de Editoriales que hayan publicado al menos un libro en el siglo XXI.\n");
+			rs = stmt.executeQuery("SELECT editorial FROM libros WHERE anyo_pub > 2000"); // Se ejecuta la sentencia.
+			
+			System.out.println("editorial\n========="); // Se saca por consola el contenido aplicando el formato adecuado para 1 columna.
+			
+			while(rs.next()) { // Se recorren cada una de las líneas del resultado de la consulta.
+				System.out.println(rs.getString(1));
+			}
+			rs.close();
+			stmt.close();
+			// Fin código segunda consulta.
+			
 			con.close();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
