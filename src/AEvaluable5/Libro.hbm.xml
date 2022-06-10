@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="AEvaluable5">
+    <class name="Libro" table="libros">
+    <!-- He retocado el nombre de la base de datos del identificador a id para tener similitud a los apuntes de los ejercicios de clase -->
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="titulo" type="string" column="titulo"/>
+        <property name="autor" type="string" column="autor"/>
+        <property name="anyo_nac" type="string" column="anyo_nac"/>
+        <property name="anyo_pub" type="string" column="anyo_pub"/>  
+        <property name="editorial" type="string" column="editorial"/> 
+        <property name="num_pag" type="string" column="num_pag"/>   
+    </class>
+</hibernate-mapping>
