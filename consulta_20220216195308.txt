@@ -1,0 +1,3 @@
+nombre  precio
+======  ======
+Nueva York   725
