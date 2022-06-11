@@ -294,7 +294,7 @@ public class Biblioteca {
 	/*
 	main
 	Descripción: método main, recupera todos los libros a partir del fichero "biblioteca.xml" y los extrae a 
-				 la variable lista, posteriormente muestra el menú y interaciona con el usuario que la gestiona. 
+				 la variable lista, posteriormente muestra el menú e interaciona con el usuario que la gestiona. 
 	Entradas: no.
 	Salidas: no.
 	*/
