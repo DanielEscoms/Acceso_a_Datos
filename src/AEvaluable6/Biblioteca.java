@@ -26,7 +26,11 @@ public class Biblioteca {
 	Salidas: no.
 	*/
 	public static void mostrarTodosTitulos() {
-        
+		MongoCursor<Document> cursor = coleccion.find().iterator();
+		while(cursor.hasNext()) {
+			JSONObject obj = new JSONObject(cursor.next().toJson());
+			System.out.println("ID: " + obj.getString("Id") + " - TITULO: " + obj.getString("Titol"));
+		}
 	}
 	
 	/*
@@ -35,8 +39,19 @@ public class Biblioteca {
 	Entradas: entero con el identificador del libro.
 	Salidas: no.
 	*/
-	public static void mostrarLibro(int id) {
-		
+	public static void mostrarLibro(String id) {
+		Bson query= eq("Id", id);
+		MongoCursor<Document> cursor = coleccion.find(query).iterator();
+		while(cursor.hasNext()) {
+			JSONObject obj = new JSONObject(cursor.next().toJson());
+			System.out.println("ID: " + obj.getString("Id")); 
+			System.out.println("TITULO: " + obj.getString("Titol"));
+			System.out.println("AUTOR: " + obj.getString("Autor"));
+			System.out.println("ANYO NACIMIENTO: " + obj.getString("Any_naixement"));
+			System.out.println("ANYO PUBLICACION: " + obj.getString("Any_publicacio"));
+			System.out.println("EDITORIAL: " + obj.getString("Editorial"));
+			System.out.println("Nº PAGINAS: " + obj.getString("Nombre_pagines"));
+		}
 	}
 	
 	/*
@@ -46,7 +61,23 @@ public class Biblioteca {
 	Salidas: no.
 	*/
 	public static void crearLibro() {
-		
+		Scanner teclado = new Scanner(System.in);
+		System.out.print("ID: "); String id = teclado.nextLine(); 
+		System.out.print("TITULO: "); String titulo = teclado.nextLine(); 
+		System.out.print("AUTOR: "); String autor = teclado.nextLine(); 
+		System.out.print("ANYO NACIMIENTO: "); String any_nac = teclado.nextLine(); 
+		System.out.print("ANYO PUBLICACION: "); String any_pub = teclado.nextLine(); 
+		System.out.print("EDITORIAL: "); String editorial = teclado.nextLine(); 
+		System.out.print("Nº PAGINAS: "); String n_pag = teclado.nextLine(); 
+		Document doc= new Document();
+		doc.append("Id", id);
+		doc.append("Titol", titulo);
+		doc.append("Autor", autor);
+		doc.append("Any_naixement", any_nac);
+		doc.append("Any_publicacio", any_pub);
+		doc.append("Editorial", editorial);
+		doc.append("Nombre_pagines", n_pag);
+		coleccion.insertOne(doc);
 	}
 	
 	/*
@@ -55,8 +86,34 @@ public class Biblioteca {
 	Entradas: entero con el identificador del libro.
 	Salidas: no
 	*/
-	public static void actualizarLibro(int id) {
-		
+	public static void actualizarLibro(String id) {
+		Scanner teclado = new Scanner(System.in);
+		System.out.println("Introduce datos nuevos (caracter '=' para dejarlo igual)");
+		Bson query= eq("Id", id);
+		System.out.print("TITULO: ");
+		String nuevoCampo = teclado.nextLine();
+		if (!nuevoCampo.equals("="))
+			coleccion.updateOne(query, new Document("$set", new Document("Titol", nuevoCampo)));
+		System.out.print("AUTOR: ");
+		nuevoCampo = teclado.nextLine();
+		if (!nuevoCampo.equals("="))
+			coleccion.updateOne(query, new Document("$set", new Document("Autor", nuevoCampo)));
+		System.out.print("ANYO NACIMIENTO: ");
+		nuevoCampo = teclado.nextLine();
+		if (!nuevoCampo.equals("="))
+			coleccion.updateOne(query, new Document("$set", new Document("Any_naixement", nuevoCampo)));
+		System.out.print("ANYO PUBLICACION: ");
+		nuevoCampo = teclado.nextLine();
+		if (!nuevoCampo.equals("="))
+			coleccion.updateOne(query, new Document("$set", new Document("Any_publicacio", nuevoCampo)));
+		System.out.print("EDITORIAL: ");
+		nuevoCampo = teclado.nextLine();
+		if (!nuevoCampo.equals("="))
+			coleccion.updateOne(query, new Document("$set", new Document("Editorial", nuevoCampo)));
+		System.out.print("Nº PAGINAS: ");
+		nuevoCampo = teclado.nextLine();
+		if (!nuevoCampo.equals("="))
+			coleccion.updateOne(query, new Document("$set", new Document("Nombre_pagines", nuevoCampo)));
 	}
 	
 	/*
@@ -65,8 +122,8 @@ public class Biblioteca {
 	Entradas: número entero con el identificador del objeto de tipo Libro.
 	Salidas: no
 	*/
-	public static void borrarLibro(int id) {
-		
+	public static void borrarLibro(String id) {
+		coleccion.deleteOne(eq("Id", id));
 	}
 	
 	/*
@@ -87,12 +144,11 @@ public class Biblioteca {
 			de la conexión con la base de datos con el menú de la biblioteca.*/
 			Thread.sleep(200);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         Scanner teclado = new Scanner(System.in);
 		int elemento = 0;
-		int id;
+		String id;
 
 		while (elemento != 6) {
 			System.out.println("\nMenú de la biblioteca, seleccione un elemento: "
@@ -110,7 +166,8 @@ public class Biblioteca {
 					break;
 				case 2:
 					System.out.print("Indica el identificador del libro a mostrar: ");
-					id = Integer.parseInt(teclado.next());// Se recibe el identificador por teclado
+					id = teclado.next();// Se recibe el identificador por teclado, no se parsea a String ya que en la base de datos es un string, por lo que se genera un id de tipo string
+					//id = Integer.parseInt(teclado.next());
 					mostrarLibro(id);
 					break;
 				case 3:
@@ -118,12 +175,12 @@ public class Biblioteca {
 					break;
 				case 4:
 					System.out.print("Indica el identificador del libro a modificar: ");
-					id = Integer.parseInt(teclado.next());
+					id = teclado.next();
 					actualizarLibro(id);
 					break;
 				case 5:
 					System.out.print("Indica el identificador del libro a borrar: ");
-					id = Integer.parseInt(teclado.next());
+					id = teclado.next();
 					borrarLibro(id);
 					break;
 				case 6:
