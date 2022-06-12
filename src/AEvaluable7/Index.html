@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Mi Gramola</title>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script>AQUÍ EL CUERPO DEL SCRIPT PARA CONSULTA</script>
+		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+		<script>AQUÍ EL CUERPO DEL SCRIPT PARA GUARDAR</script>
+	</head>
+	<body>
+		<h1>Mi Gramola</h1>
+		<p>Grupo/Artista:</p>
+		<p><input type="text" value="" id="strBusquedaGrupo">
+		<button id="botonBusquedaGrupo" onclick="getGroupInfo()">Buscar</button>
+		</p>
+		<img id="imagenGrupo" src="" height="300" style="display:none;" />
+		<p>Biograf&iacutea:</p>
+		<textarea id="strBiographyEN" rows="10" style="width:100%"></textarea>
+		<p>Discograf&iacutea:</p>
+		<textarea id="strDiscography" rows="10" cols="50"></textarea>
+		<p><button id="botonGuardar" onclick="guardarInfo()">Guardar</button></p>
+	</body>
+</html>
