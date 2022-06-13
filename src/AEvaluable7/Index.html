@@ -5,22 +5,85 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 		<title>Mi Gramola</title>
-		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-		<script>AQUÍ EL CUERPO DEL SCRIPT PARA CONSULTA</script>
-		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-		<script>AQUÍ EL CUERPO DEL SCRIPT PARA GUARDAR</script>
+		<script src = "https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script type = "text/javascript">
+			function getFoodInfo() {
+				var strBusquedaAlimento = document.getElementById('strBusquedaAlimento').value;
+				var options = {
+				    method: 'GET',
+				    url: `https://api.calorieninjas.com/v1/nutrition?query=${strBusquedaAlimento}`,
+				    headers: { 'X-Api-Key': 'nLw46OBFPXRZtypyMJcJ6Q==h6CNwrcwmBhXEgOX' },
+				};
+				if (strBusquedaAlimento == '') {
+			      alert("Requiere un nombre de alimento.");
+			      return;
+			    } else if (strBusquedaAlimento.split(' ').length > 1) {
+			      alert("Solamente se acepta un alimento.");
+			      return;
+			    }
+			    axios.request(options).then(function (response) {
+
+			      if (response.data.items.length === 0) {
+			        alert("El alimento buscado no es válido, por favor, pruebe con otro.");
+			        return;
+			      }
+			      console.log(response.data);
+			      console.log(response.data.items);
+
+			      document.getElementById('strServingSizeG').value= response.data.items[0].serving_size_g;
+			      document.getElementById('strCalories').value= response.data.items[0].calories;
+			      document.getElementById('strFatTotalG').value= response.data.items[0].fat_total_g;
+			      document.getElementById('strProteinG').value= response.data.items[0].protein_g;
+			      document.getElementById('strCarbohidratesTotalG').value= response.data.items[0].carbohydrates_total_g;
+			      
+			    }).catch(function (error) {
+			      console.log(error);
+			    });
+			}
+		</script>
+		<script src = "https://code.jquery.com/jquery-3.5.1.min.js"></script>
+		<script type = "text/javascript">
+			function guardarInfo() {
+				console.log("Hola desde función guardar");
+				var alimento = document.getElementById('strBusquedaAlimento').value;
+				var cantidad = document.getElementById('strServingSizeG').value;
+				var kcal = document.getElementById('strCalories').value;
+				var grasa = document.getElementById('strFatTotalG').value;
+				var proteina = document.getElementById('strProteinG').value;
+				var carbohidratos = document.getElementById('strCarbohidratesTotalG').value;
+				console.log("Hola desde función guardar"+ carbohidratos);
+				$.ajax({
+					type: "POST", //metodoPOST para enviar datos al servidor
+					url: "alimentosPHP.php", // ruta del fichero PHP del servidor
+					data: {alimento: alimento, cantidad: cantidad, kcal: kcal, grasa: grasa, proteina: proteina, carbohidratos: carbohidratos}, // datos a enviar (p.ej. {valor:valor, nombre:nombre})
+					success: function (response) { //resultado del PHP del servidor
+						alert(response);
+					},
+					error: function () {
+						alert("Error");
+					}
+				});
+			}
+		</script>
 	</head>
 	<body>
-		<h1>Mi Gramola</h1>
-		<p>Grupo/Artista:</p>
-		<p><input type="text" value="" id="strBusquedaGrupo">
-		<button id="botonBusquedaGrupo" onclick="getGroupInfo()">Buscar</button>
+		<h1>Almacenaje alimentos</h1>
+		<p>Alimento:</p>
+		<p>
+			<input placeholder="Name in ENGLISH" type="text" value="" width="450" height="300" id="strBusquedaAlimento">
+			<button id="botonBusquedaAlimento" onclick="getFoodInfo()">Buscar</button>
 		</p>
-		<img id="imagenGrupo" src="" height="300" style="display:none;" />
-		<p>Biograf&iacutea:</p>
-		<textarea id="strBiographyEN" rows="10" style="width:100%"></textarea>
-		<p>Discograf&iacutea:</p>
-		<textarea id="strDiscography" rows="10" cols="50"></textarea>
+		<h3><br>Informacion nutricional</h3>
+		<p>Cantidad/peso (g): </p>
+		<textarea id="strServingSizeG"></textarea>
+		<p>Kcal: </p>
+		<textarea id="strCalories"></textarea>
+		<p>Grasa total (g): </p>
+		<textarea id="strFatTotalG"></textarea>
+		<p>Proteinas (g): </p>
+		<textarea id="strProteinG"></textarea>
+		<p>Hidratos de carbono (g): </p>
+		<textarea id="strCarbohidratesTotalG"></textarea>
 		<p><button id="botonGuardar" onclick="guardarInfo()">Guardar</button></p>
 	</body>
 </html>
